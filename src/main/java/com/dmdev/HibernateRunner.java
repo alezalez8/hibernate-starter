@@ -10,10 +10,7 @@ import java.time.LocalDate;
 
 public class HibernateRunner {
     public static void main(String[] args) throws SQLException {
-/*
-        BlockingDeque<Connection>  pool = null;
-        Connection connection = DriverManager.getConnection("db.url", "db.username", "db.password");
-*/
+
         Configuration configuration = new Configuration();
        // configuration.addAnnotatedClass(User.class);
         configuration.configure();

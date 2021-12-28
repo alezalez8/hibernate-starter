@@ -22,10 +22,14 @@ public class User {
 
     @Id
     private String username;
+
     private String firstname;
+
     private String lastname;
+
     @Column(name = "birth_date")
     private LocalDate birthDate;
+
     private Integer age;
 
 
