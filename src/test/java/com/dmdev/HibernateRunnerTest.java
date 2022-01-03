@@ -1,7 +1,6 @@
 package com.dmdev;
 
 import com.dmdev.entity.User;
-import org.hibernate.annotations.Columns;
 import org.junit.jupiter.api.Test;
 
 import javax.persistence.Column;
@@ -11,8 +10,6 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class HibernateRunnerTest {
 
