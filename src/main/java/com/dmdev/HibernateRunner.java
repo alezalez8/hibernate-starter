@@ -11,6 +11,9 @@ import java.time.LocalDate;
 public class HibernateRunner {
     public static void main(String[] args) throws SQLException {
 
+       // DriverManager.getConnection("jdbc:postgresql://localhost:5432/my_postgres_test", "postgres", "postgres");
+
+
         Configuration configuration = new Configuration();
        // configuration.addAnnotatedClass(User.class);
         configuration.configure();
