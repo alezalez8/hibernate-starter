@@ -12,10 +12,10 @@ import javax.persistence.Table;
 import java.time.LocalDate;
 
 
-@Data
+@Data   // генерит сеттеры, геттеры,хэшкоды, тустринг и т.д.
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Builder // создание красиво сущностей
 @Entity
 @Table(name = "users", schema = "public")
 public class User {
