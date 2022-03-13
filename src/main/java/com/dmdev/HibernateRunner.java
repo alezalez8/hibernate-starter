@@ -15,7 +15,7 @@ public class HibernateRunner {
 
 
         Configuration configuration = new Configuration();
-       // configuration.addAnnotatedClass(User.class); // это маппинг
+       // configuration.addAnnotatedClass(User.class); // это маппинг на таблицу
         configuration.configure();
 
         try (SessionFactory sessionFactory = configuration.buildSessionFactory();
