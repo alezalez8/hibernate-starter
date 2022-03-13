@@ -15,12 +15,12 @@ public class HibernateRunner {
 
 
         Configuration configuration = new Configuration();
-       // configuration.addAnnotatedClass(User.class);
+       // configuration.addAnnotatedClass(User.class); // это маппинг
         configuration.configure();
 
         try (SessionFactory sessionFactory = configuration.buildSessionFactory();
              Session session = sessionFactory.openSession()) {
-            System.out.println("OK");
+           // System.out.println("OK");
 
             session.beginTransaction();
             User user = User.builder()
