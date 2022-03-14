@@ -32,6 +32,7 @@ public class HibernateRunner {
                     .build();
             session.save(user);
             session.getTransaction().commit();
+            session.getTransaction().rollback();
 
             session.beginTransaction();
             user = User.builder()
