@@ -1,5 +1,6 @@
 package com.dmdev;
 
+import com.dmdev.entity.Role;
 import com.dmdev.entity.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -24,15 +25,16 @@ public class HibernateRunner {
 
             session.beginTransaction();
             User user = User.builder()
-                    .username("gena@gmail.com")
+                    .username("gena111@gmail.com")
                     .firstname("Gena")
                     .lastname("Genavov")
                     .birthDate(LocalDate.of(1998, 11, 14))
                     .age(22)
+                    .role(Role.ADMIN)
                     .build();
             session.save(user);
             session.getTransaction().commit();
-            session.getTransaction().rollback();
+
 
             session.beginTransaction();
             user = User.builder()
@@ -41,15 +43,13 @@ public class HibernateRunner {
                     .lastname("Petrov")
                     .birthDate(LocalDate.of(1995, 5, 11))
                     .age(25)
+                    .role(Role.USER)
                     .build();
             session.save(user);
             session.getTransaction().commit();
 
 
         }
-
-
-
 
 
     }
