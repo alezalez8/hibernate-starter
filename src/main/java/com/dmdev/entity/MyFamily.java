@@ -1,6 +1,6 @@
 package com.dmdev.entity;
 
-import com.dmdev.converter.BirthdayConverter;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,23 +15,20 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Builder // создание красиво сущностей
 @Entity
-@Table(name = "users", schema = "public")
-public class User {
+@Table(name = "my_family", schema = "public")
+public class MyFamily {
 
     @Id
-    private String username;
-    private String firstname;
-    private String lastname;
+    private String id;
 
-   // @Convert(converter = BirthdayConverter.class)
-    @Column(name = "birth_date")
-    private Birthday birthDate;
-    //private LocalDate birthDate;
+    private String department;
 
+    private String position;
 
-   // private Integer age;
+    @Column(name = "hair_date")
+    private LocalDate hairDate;
 
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private MaleFemale sex;
 
 }

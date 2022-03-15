@@ -1,7 +1,7 @@
 package com.dmdev;
 
-import com.dmdev.entity.Role;
-import com.dmdev.entity.User;
+import com.dmdev.converter.BirthdayConverter;
+import com.dmdev.entity.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -18,6 +18,7 @@ public class HibernateRunner {
         Configuration configuration = new Configuration();
        // configuration.addAnnotatedClass(User.class); // это маппинг на таблицу
         configuration.configure();
+        configuration.addAttributeConverter(new BirthdayConverter());
 
         try (SessionFactory sessionFactory = configuration.buildSessionFactory();
              Session session = sessionFactory.openSession()) {
@@ -25,17 +26,30 @@ public class HibernateRunner {
 
             session.beginTransaction();
             User user = User.builder()
-                    .username("gena111@gmail.com")
+                    .username("gena1@gmail.com")
                     .firstname("Gena")
                     .lastname("Genavov")
-                    .birthDate(LocalDate.of(1998, 11, 14))
-                    .age(22)
-                    .role(Role.ADMIN)
+                    .birthDate(new Birthday(LocalDate.of(1998, 11, 14)))
+                     .role(Role.ADMIN)
                     .build();
             session.save(user);
             session.getTransaction().commit();
 
+/*
+            session.beginTransaction();
+            MyFamily family = MyFamily.builder()
+                    .id("first")
+                    .department("IT")
+                    .position("Midle")
+                    .hairDate(LocalDate.of(2022, 5, 10))
+                    .sex(MaleFemale.MALE)
+                    .build();
+            session.save(family);
+            session.getTransaction().commit();
+*/
 
+
+/*
             session.beginTransaction();
             user = User.builder()
                     .username("petr@gmail.com")
@@ -47,6 +61,7 @@ public class HibernateRunner {
                     .build();
             session.save(user);
             session.getTransaction().commit();
+*/
 
 
         }
