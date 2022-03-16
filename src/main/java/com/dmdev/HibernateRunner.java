@@ -2,6 +2,8 @@ package com.dmdev;
 
 import com.dmdev.converter.BirthdayConverter;
 import com.dmdev.entity.*;
+import com.dmdev.type.JsonType;
+import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -19,6 +21,7 @@ public class HibernateRunner {
        // configuration.addAnnotatedClass(User.class); // это маппинг на таблицу
         configuration.configure();
         configuration.addAttributeConverter(new BirthdayConverter());
+        configuration.registerTypeOverride(new JsonBinaryType());
 
         try (SessionFactory sessionFactory = configuration.buildSessionFactory();
              Session session = sessionFactory.openSession()) {
@@ -26,9 +29,15 @@ public class HibernateRunner {
 
             session.beginTransaction();
             User user = User.builder()
-                    .username("gena1@gmail.com")
+                    .username("gena45411@gmail.com")
                     .firstname("Gena")
                     .lastname("Genavov")
+                    .info("""
+                            {
+                                "name": "Ivan",
+                                "id": 25
+                            }
+                            """)
                     .birthDate(new Birthday(LocalDate.of(1998, 11, 14)))
                      .role(Role.ADMIN)
                     .build();
