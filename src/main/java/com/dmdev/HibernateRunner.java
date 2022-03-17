@@ -29,7 +29,7 @@ public class HibernateRunner {
 
             session.beginTransaction();
             User user = User.builder()
-                    .username("gena45411@gmail.com")
+                    .username("gena45241@gmail.com")
                     .firstname("Gena")
                     .lastname("Genavov")
                     .info("""
@@ -41,7 +41,16 @@ public class HibernateRunner {
                     .birthDate(new Birthday(LocalDate.of(1998, 11, 14)))
                      .role(Role.ADMIN)
                     .build();
-            session.save(user);
+           // session.save(user);
+            User user1 = session.get(User.class, "gena45411@gmail.com");
+            user1.setFirstname("Iva3n2");
+              session.flush();
+            System.out.println(session.isDirty());
+
+           // session.evict(user1);
+           // session.clear();
+          //  User user2 = session.get(User.class, "gena45411@gmail.com");
+
             session.getTransaction().commit();
 
 /*
@@ -72,9 +81,7 @@ public class HibernateRunner {
             session.getTransaction().commit();
 */
 
-
         }
-
 
     }
 }
