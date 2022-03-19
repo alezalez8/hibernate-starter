@@ -1,36 +1,34 @@
 package com.dmdev;
 
-import com.dmdev.converter.BirthdayConverter;
-import com.dmdev.entity.*;
-import com.dmdev.type.JsonType;
-import com.vladmihalcea.hibernate.naming.CamelCaseToSnakeCaseNamingStrategy;
-import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
+import com.dmdev.entity.User;
+import com.dmdev.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
 
 public class HibernateRunner {
     public static void main(String[] args) throws SQLException {
-        Configuration configuration = new Configuration();
-        configuration.setPhysicalNamingStrategy(new CamelCaseToSnakeCaseNamingStrategy());
-        configuration.addAnnotatedClass(User.class); // это маппинг на таблицу
-        configuration.addAttributeConverter(new BirthdayConverter());
-        configuration.registerTypeOverride(new JsonBinaryType());
-        configuration.configure();
+        User user = User.builder()
+                .username("gena1@gmail.com")
+                .lastname("Ivanov")
+                .firstname("Ivan")
+                .build();
 
-
-        try (SessionFactory sessionFactory = configuration.buildSessionFactory()) {
+        try (SessionFactory sessionFactory = HibernateUtil.buildSessionFactory()) {
             try (Session session1 = sessionFactory.openSession()) {
                 session1.beginTransaction();
+
+
+                session1.saveOrUpdate(user);
+
 
 
                 session1.getTransaction().commit();
             }
             try (Session session2 = sessionFactory.openSession()) {
                 session2.beginTransaction();
+                session2.delete(user);
 
 
                 session2.getTransaction().commit();
