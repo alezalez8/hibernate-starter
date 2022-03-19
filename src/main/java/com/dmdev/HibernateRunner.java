@@ -3,6 +3,7 @@ package com.dmdev;
 import com.dmdev.converter.BirthdayConverter;
 import com.dmdev.entity.*;
 import com.dmdev.type.JsonType;
+import com.vladmihalcea.hibernate.naming.CamelCaseToSnakeCaseNamingStrategy;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -13,25 +14,35 @@ import java.time.LocalDate;
 
 public class HibernateRunner {
     public static void main(String[] args) throws SQLException {
-
-       // DriverManager.getConnection("jdbc:postgresql://localhost:5432/my_postgres_test", "postgres", "postgres");
-
-
         Configuration configuration = new Configuration();
-       // configuration.addAnnotatedClass(User.class); // это маппинг на таблицу
-        configuration.configure();
+        configuration.setPhysicalNamingStrategy(new CamelCaseToSnakeCaseNamingStrategy());
+        configuration.addAnnotatedClass(User.class); // это маппинг на таблицу
         configuration.addAttributeConverter(new BirthdayConverter());
         configuration.registerTypeOverride(new JsonBinaryType());
+        configuration.configure();
 
-        try (SessionFactory sessionFactory = configuration.buildSessionFactory();
-             Session session = sessionFactory.openSession()) {
-           // System.out.println("OK");
 
+        try (SessionFactory sessionFactory = configuration.buildSessionFactory()) {
+            try (Session session1 = sessionFactory.openSession()) {
+                session1.beginTransaction();
+
+
+                session1.getTransaction().commit();
+            }
+            try (Session session2 = sessionFactory.openSession()) {
+                session2.beginTransaction();
+
+
+                session2.getTransaction().commit();
+            }
+
+
+/*
             session.beginTransaction();
             User user = User.builder()
-                    .username("gena45241@gmail.com")
-                    .firstname("Gena")
-                    .lastname("Genavov")
+                    .username("gena4565241@gmail.com")
+                    .firstname("Ge6na")
+                    .lastname("Gen5avov")
                     .info("""
                             {
                                 "name": "Ivan",
@@ -41,45 +52,16 @@ public class HibernateRunner {
                     .birthDate(new Birthday(LocalDate.of(1998, 11, 14)))
                      .role(Role.ADMIN)
                     .build();
-           // session.save(user);
-            User user1 = session.get(User.class, "gena45411@gmail.com");
+            session.save(user);
+            User user1 = session.get(User.class, "gena4565241@gmail.com");
             user1.setFirstname("Iva3n2");
               session.flush();
             System.out.println(session.isDirty());
 
-           // session.evict(user1);
-           // session.clear();
-          //  User user2 = session.get(User.class, "gena45411@gmail.com");
 
-            session.getTransaction().commit();
-
-/*
-            session.beginTransaction();
-            MyFamily family = MyFamily.builder()
-                    .id("first")
-                    .department("IT")
-                    .position("Midle")
-                    .hairDate(LocalDate.of(2022, 5, 10))
-                    .sex(MaleFemale.MALE)
-                    .build();
-            session.save(family);
             session.getTransaction().commit();
 */
 
-
-/*
-            session.beginTransaction();
-            user = User.builder()
-                    .username("petr@gmail.com")
-                    .firstname("Petr")
-                    .lastname("Petrov")
-                    .birthDate(LocalDate.of(1995, 5, 11))
-                    .age(25)
-                    .role(Role.USER)
-                    .build();
-            session.save(user);
-            session.getTransaction().commit();
-*/
 
         }
 
