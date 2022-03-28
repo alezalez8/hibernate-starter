@@ -2,19 +2,20 @@ package com.dmdev;
 
 import com.dmdev.entity.User;
 import com.dmdev.util.HibernateUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.hibernate.Transaction;
 
 import java.sql.SQLException;
 
+@Slf4j
 public class HibernateRunner {
-    private static Logger log = LoggerFactory.getLogger(HibernateRunner.class);
+   // private static Logger log = LoggerFactory.getLogger(HibernateRunner.class);
 
     public static void main(String[] args) throws SQLException {
         User user = User.builder()
-                .username("gena1@gmail.com")
+                .username("gena341@gmail.com")
                 .lastname("Ivanov")
                 .firstname("Ivan")
                 .build();
@@ -22,16 +23,24 @@ public class HibernateRunner {
         log.info("User entity is in transient state, object: {}", user);
 
         try (SessionFactory sessionFactory = HibernateUtil.buildSessionFactory()) {
-            try (Session session1 = sessionFactory.openSession()) {
-                session1.beginTransaction();
-
+            Session session1 = sessionFactory.openSession();
+            try (session1) {
+                Transaction transaction = session1.beginTransaction();
+               // session1.beginTransaction();
+                log.trace("Transaction is created, {}", transaction);
 
                 session1.saveOrUpdate(user);
-
-
+                log.trace("User is in persistent state: {}, session {}", user, session1);
 
                 session1.getTransaction().commit();
+
             }
+            log.warn("User is detached state: {}, session is closed {}", user, session1);
+        } catch (Exception exception) {
+            log.error("Exeption occured", exception);
+            throw exception;
+        }
+/*
             try (Session session2 = sessionFactory.openSession()) {
                 session2.beginTransaction();
                 session2.delete(user);
@@ -39,6 +48,7 @@ public class HibernateRunner {
 
                 session2.getTransaction().commit();
             }
+*/
 
 
 /*
@@ -65,9 +75,6 @@ public class HibernateRunner {
 
             session.getTransaction().commit();
 */
-
-
-        }
 
     }
 }
