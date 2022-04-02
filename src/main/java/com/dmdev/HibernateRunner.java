@@ -1,5 +1,7 @@
 package com.dmdev;
 
+import com.dmdev.entity.Birthday;
+import com.dmdev.entity.PersonalInfo;
 import com.dmdev.entity.User;
 import com.dmdev.util.HibernateUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -8,16 +10,22 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 @Slf4j
 public class HibernateRunner {
-   // private static Logger log = LoggerFactory.getLogger(HibernateRunner.class);
+    // private static Logger log = LoggerFactory.getLogger(HibernateRunner.class);
 
     public static void main(String[] args) throws SQLException {
         User user = User.builder()
-                .username("gena341@gmail.com")
-                .lastname("Ivanov")
-                .firstname("Ivan")
+                .username("genaqq34413@gmail.com")
+                .personalInfo(PersonalInfo.builder()
+                        .firstname("Yura")
+                        .lastname("Radov")
+                        .birthDate(new Birthday(LocalDate.of(2000, 12, 14)))
+                        .build())
+                // .lastname("Ivanov")
+
                 .build();
 
         log.info("User entity is in transient state, object: {}", user);
@@ -26,7 +34,7 @@ public class HibernateRunner {
             Session session1 = sessionFactory.openSession();
             try (session1) {
                 Transaction transaction = session1.beginTransaction();
-               // session1.beginTransaction();
+                // session1.beginTransaction();
                 log.trace("Transaction is created, {}", transaction);
 
                 session1.saveOrUpdate(user);
@@ -36,6 +44,20 @@ public class HibernateRunner {
 
             }
             log.warn("User is detached state: {}, session is closed {}", user, session1);
+
+            try (Session session = sessionFactory.openSession()){
+            PersonalInfo key = PersonalInfo.builder()
+                    .firstname("Yura")
+                    .lastname("Radov")
+                    .birthDate(new Birthday(LocalDate.of(2000, 12, 14)))
+                    .build();
+
+               User user2 =  session.get(User.class, key);
+                System.out.println();
+            }
+
+
+
         } catch (Exception exception) {
             log.error("Exeption occured", exception);
             throw exception;

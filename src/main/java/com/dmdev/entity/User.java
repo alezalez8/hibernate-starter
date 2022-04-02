@@ -23,19 +23,39 @@ import java.time.LocalDate;
 @TypeDef(name = "dmdev", typeClass = JsonBinaryType.class)
 public class User {
 
+
+/*
     @Id
+    @GeneratedValue(generator = "user_gen", strategy = GenerationType.TABLE)
+    @SequenceGenerator(name = "user_gen", sequenceName = "users_id_seq", allocationSize = 1)
+    private Long id;
+
+
+    @Column(unique = true)
     private String username;
-    private String firstname;
-    private String lastname;
+*/
 
-    // @Convert(converter = BirthdayConverter.class)
-    @Column(name = "birth_date")
-    private Birthday birthDate;
-    //private LocalDate birthDate;
+    //@Embedded
+    @EmbeddedId
+    @AttributeOverride(name = "birthDate", column = @Column(name = "birth_date"))
+    private PersonalInfo personalInfo;
 
+    /*
+        private String firstname;
+        private String lastname;
+
+        // @Convert(converter = BirthdayConverter.class)
+        @Column(name = "birth_date")
+        private Birthday birthDate;
+        //private LocalDate birthDate;
+    */
+    @Column(unique = true)
+    private String username;
 
     //@Type(type = "com.vladmihalcea.hibernate.type.json.JsonBinaryType" )
     //@Type(type = "jsonb")
+
+
     @Type(type = "dmdev")
     private String info;
     // private Integer age;
